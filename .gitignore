@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# MacOS File
+.DS_Store
+
+# HDF file
+*.hdf
