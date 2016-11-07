@@ -60,7 +60,7 @@ def getAllLayers(filename):
 
 # Test with one image
 
-filename = "MOD09A1.A2015017.h27v06.005.2015028030040.hdf"
+filename = "HdfFiles/MOD09A1.A2015017.h27v06.005.2015028030040.hdf"
 x = getAllLayers(filename)
 print(x["eviLayer"])
 showImage(x["ndviLayer"])
