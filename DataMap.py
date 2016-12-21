@@ -15,6 +15,6 @@ def getAllHdfFilesPath(folderPath):
 
 # Test
 
-folderPath = "HdfFiles"
-print(getAllHdfFilesPath(folderPath))
-print(getAllLayers(getAllHdfFilesPath(folderPath)[0]["redLayer"]))
+# folderPath = "HdfFiles"
+# print(getAllHdfFilesPath(folderPath))
+# print(getAllLayers(getAllHdfFilesPath(folderPath)[0]["redLayer"]))

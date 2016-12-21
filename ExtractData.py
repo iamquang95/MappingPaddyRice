@@ -1,4 +1,4 @@
-import gdal
+from osgeo import gdal
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,7 +22,7 @@ def showImage(data):
     plt.show()
 
 # calculate arg1/arg2, if arg2 == 0, return 0
-def devideIgnoreZero(arg1, arg2):
+def divideIgnoreZero(arg1, arg2):
     with np.errstate(divide='ignore', invalid='ignore'):
         res = np.true_divide(arg1, arg2)
         res[res == np.inf] = 0
@@ -32,7 +32,7 @@ def devideIgnoreZero(arg1, arg2):
 def getLayerAsFloatArray(filename, layerStr):
     return np.array(getArrayLayer(filename, layerStr)).astype(float)
 
-# This function can only extract layer from 500m MODIS 8 dayus
+# This function can only extract layer from 500m MODIS 8 days
 def getAllLayers(filename):
     redLayerStr = "MOD_Grid_500m_Surface_Reflectance:sur_refl_b01"
     nirLayerStr = "MOD_Grid_500m_Surface_Reflectance:sur_refl_b02"
@@ -44,9 +44,9 @@ def getAllLayers(filename):
     blueLayer = getLayerAsFloatArray(filename, blueLayerStr)
     swirLayer = getLayerAsFloatArray(filename, swirLayerStr)
 
-    ndviLayer = devideIgnoreZero((nirLayer - redLayer), (nirLayer + redLayer))
-    eviLayer = devideIgnoreZero((2.5*(nirLayer-redLayer)), (nirLayer + 6*redLayer - 7.5*blueLayer + 1))
-    lswiLayer = devideIgnoreZero((nirLayer - swirLayer), (nirLayer + swirLayer))
+    ndviLayer = divideIgnoreZero((nirLayer - redLayer), (nirLayer + redLayer))
+    eviLayer = divideIgnoreZero((2.5*(nirLayer-redLayer)), (nirLayer + 6*redLayer - 7.5*blueLayer + 1))
+    lswiLayer = divideIgnoreZero((nirLayer - swirLayer), (nirLayer + swirLayer))
 
     return {
         "redLayer": redLayer,
