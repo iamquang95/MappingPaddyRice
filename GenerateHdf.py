@@ -5,15 +5,14 @@ import numpy
 from PIL import Image
 import matplotlib.pyplot as plt
 
-def makeFileName(x, suffix, ext = "tif"):
+def makeFileName(prefix, suffix, ext = "tif"):
     """
     Generate a new file name by appending a suffix and changing the extension of an input file name 
-    :param x: string, input file name
+    :param prefix: string, input file name
     :param suffix: string, suffix to be placed just before file extension (e.g., 'NDVI')
     :param ext: string, extension. Don't put the period before the extension
-    """
-    # base = os.path.splitext(os.path.basename(x))[0]
-    return x + '_' + suffix + '.' + ext
+    """    
+    return prefix + '_' + suffix + '.' + ext
 
 def getData(filename, band):
 	dataset = gdal.Open(filename, gdal.GA_ReadOnly)
