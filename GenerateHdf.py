@@ -15,9 +15,9 @@ def makeFileName(x, suffix, ext = "tif"):
     # base = os.path.splitext(os.path.basename(x))[0]
     return x + '_' + suffix + '.' + ext
 
-def getData(filename):
+def getData(filename, band):
 	dataset = gdal.Open(filename, gdal.GA_ReadOnly)
-	band = dataset.GetRasterBand(1)
+	band = dataset.GetRasterBand(band)
 	array = band.ReadAsArray()
 	return array
 
@@ -63,6 +63,6 @@ def processDir(dir):
 			print file
 			processFile(dir, file)
 
-filename = "MOD09A1.A2015001.h27v06.006.2015295092734.sur_refl_b01.tif"
+# filename = "MOD09A1.A2015001.h27v06.006.2015295092734.sur_refl_b01.tif"
 # processFile('./', filename)
-processDir('F:/DaiHoc/Images/2005/')
+# processDir('F:/DaiHoc/Images/2005/')
