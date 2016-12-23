@@ -54,4 +54,3 @@ def extractBandForYear(dir, _year):
 	return result
 
 # temp = extractBand('F:/DaiHoc/2016-2017 ki 1/Advanced Topics in Computer Science/Images', 'NDVI_2015_DBSH.tif')
-temp = extractBandForYear('F:/DaiHoc/2016-2017 ki 1/Advanced Topics in Computer Science/Images', 2005)

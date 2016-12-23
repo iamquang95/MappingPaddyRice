@@ -93,3 +93,11 @@ ENV/
 
 # HDF file
 *.hdf
+
+# Intellij files
+.idea
+.idea/
+
+# Data folders
+PaddyRice ROI
+PaddyRice TIFF

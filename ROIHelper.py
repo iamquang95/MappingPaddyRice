@@ -30,8 +30,9 @@ def readPosSample(dir, year):
 	ndvi = readSample(dir, 'NDVI', 'Pos', year)	
 	evi = readSample(dir, 'EVI', 'Pos', year)
 	lswi = readSample(dir, 'LSWI', 'Pos', year)
+	# blue = readSample(dir, 'Blue', 'Pos', year)
 	labels = numpy.ones((ndvi.shape[0], 1), dtype=numpy.int)	
-	result = numpy.concatenate((labels, ndvi, evi, lswi), axis=1)			
+	result = numpy.concatenate((labels, ndvi, evi, lswi), axis=1)
 	return result
 
 # Return a ndarray containing band values (NDVI, EVI, LSWI) 
@@ -41,6 +42,7 @@ def readNegSample(dir, year):
 	ndvi = readSample(dir, 'NDVI', 'Neg', year)
 	evi = readSample(dir, 'EVI', 'Neg', year)
 	lswi = readSample(dir, 'LSWI', 'Neg', year)
+	# blue = readSample(dir, 'Blue', 'Neg', year)
 	labels = numpy.zeros((ndvi.shape[0], 1), dtype=numpy.int)
 	result = numpy.concatenate((labels, ndvi, evi, lswi), axis=1)
 	return result
