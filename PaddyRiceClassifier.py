@@ -37,7 +37,7 @@ class PaddyRiceClassifier:
 
     def train(self):
         data, labels = self.prepare_data()
-        test_size = 67
+        test_size = 0
 
         C_range = np.logspace(-4, 4, 9)
         gamma_range = np.logspace(-4, 4, 9)
