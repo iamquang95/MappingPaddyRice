@@ -1,5 +1,6 @@
 import os
 import numpy
+import Util
 
 def makeFileName(band, type, year):
 	return band + '_' + type + '_' + str(year) + '.txt'
@@ -15,13 +16,13 @@ def readROI(filename, type):
 	return result
 
 # Return a ndarray containing band values for a list of training data
-# Example: readSample('some_dir', 'NDVI', 'Pos')
+# Example: readSample('some_dir', 'NDVI', 'Pos', 2015)
 def readSample(dir, band, type, year):		
 	if isinstance(year, basestring):
 		filename = os.path.join(dir, makeFileName(band, type, year))
 	else:
 		filename = os.path.join(dir, makeFileName(band, type, str(year)))
-	return readROI(filename, type)
+	return Util.normalize(readROI(filename, type), band)
 
 # Return a ndarray containing band values (NDVI, EVI, LSWI) 
 # for a list of training data and their corresponding label
@@ -47,4 +48,6 @@ def readNegSample(dir, year):
 	result = numpy.concatenate((labels, ndvi, evi, lswi), axis=1)
 	return result
 
-# temp = readNegSample('F:/DaiHoc/2016-2017 ki 1/Advanced Topics in Computer Science/Images/', 2005)
+if __name__ == '__main__':
+	temp = readPosSample('F:/DaiHoc/2016-2017 ki 1/Advanced Topics in Computer Science/Images/', 2005)
+	print temp.shape
