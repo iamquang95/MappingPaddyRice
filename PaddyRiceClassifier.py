@@ -1,11 +1,13 @@
 import ROIHelper
 import numpy as np
-from sklearn import svm
+from sklearn.svm import SVC
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score
 import os.path
 from sklearn.externals import joblib
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.preprocessing import StandardScaler
 
 class PaddyRiceClassifier:
 
@@ -35,23 +37,14 @@ class PaddyRiceClassifier:
 
     def train(self):
         data, labels = self.prepare_data()
-        original_data = data.copy()
-        test_size = 0
-        X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=test_size, random_state=113)
+        test_size = 67
 
-        # print "Number of training data: %d" % X_train.shape[0]
-        # print "Number of feature: %d" % X_train.shape[1]
-        # clf = svm.SVC()
-        # clf.fit(X_train, y_train)
-        # joblib.dump(clf, "svm_model.pkl")
-        # scores = cross_val_score(clf, data, labels, cv=4)
-        # print scores, np.mean(scores)
-        # if (X_test.shape[0] > 0):
-        #     y_pred = clf.predict(X_test)
-        #     print(classification_report(y_test, y_pred))
-        #     print "Accuracy:", accuracy_score(y_test, y_pred)
+        C_range = np.logspace(-4, 4, 9)
+        gamma_range = np.logspace(-4, 4, 9)
+        param_grid = dict(gamma=gamma_range, C=C_range)
+        param_grid['kernel'] = ['rbf']
 
-        # Testing with other features: only 1 index per month
+        # Testing with features: only 2 index per month
         feature_month_index = [0]
         curr_day = 1
         curr_month = 1
@@ -69,37 +62,19 @@ class PaddyRiceClassifier:
         data = data[:, final_index]
         X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=test_size, random_state=113)
         print "\nNumber of feature: %d" % X_train.shape[1]
-        clf = svm.SVC()
+        grid = GridSearchCV(SVC(), param_grid=param_grid, cv=10)
+        grid.fit(X_train, y_train)
+        print "Best parameters:", grid.best_params_
+        print "Best score:", grid.best_score_
+
+        clf = grid.best_estimator_
         clf.fit(X_train, y_train)
         joblib.dump(clf, "svm_model.pkl")
-        scores = cross_val_score(clf, data, labels, cv=4)
-        print scores, np.mean(scores)
         if (X_test.shape[0] > 0):
             y_pred = clf.predict(X_test)
             print(classification_report(y_test, y_pred))
             print "Accuracy:", accuracy_score(y_test, y_pred)
 
-        #Testing using avg of each index
-        # tmp = original_data
-        # xx = np.amin(tmp[:, 46*(i-1):46*i], axis=1, keepdims=True)
-        # for i in range(1, 4):
-        #     index_data_min = np.amin(tmp[:, 46*(i-1):46*i], axis=1, keepdims=True)
-        #     index_data_max = np.amax(tmp[:, 46*(i-1):46*i], axis=1, keepdims=True)
-        #     index_data_avg = np.mean(tmp[:, 46*(i-1):46*i], axis=1, keepdims=True)
-        #     index_data = np.hstack((index_data_min, index_data_max, index_data_avg))
-        #     data = np.hstack((data, index_data)) if i > 1 else index_data
-        # # print "Size:", np.sum(data[:, 0:46], axis=1, keepdims=True).shape
-        # X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=test_size, random_state=113)
-        # print "\nNumber of feature: %d" % X_train.shape[1]
-        # clf3 = svm.SVC()
-        # clf3.fit(X_train, y_train)
-        # joblib.dump(clf, "svm_model.pkl")
-        # scores = cross_val_score(clf3, data, labels, cv=4)
-        # print scores, np.mean(scores)
-        # if (X_test.shape[0] > 0):
-        #     y_pred = clf3.predict(X_test)
-        #     print(classification_report(y_test, y_pred))
-        #     print "Accuracy:", accuracy_score(y_test, y_pred)
         return clf
 
     def predict(self, X):

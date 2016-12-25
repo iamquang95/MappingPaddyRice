@@ -3,7 +3,7 @@ import ImageHelper as im_helper
 from PaddyRiceClassifier import PaddyRiceClassifier
 import Output
 
-dataFolderDir = "F:/DaiHoc/2016-2017 ki 1/Advanced Topics in Computer Science/Images"
+dataFolderDir = "PaddyRice TIFF"
 
 classifier = PaddyRiceClassifier()
 
