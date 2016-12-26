@@ -1,8 +1,9 @@
 import os
 import numpy
 from osgeo import gdal
+import Config
 
-dataFolderDir = 'F:/DaiHoc/2016-2017 ki 1/Advanced Topics in Computer Science/Images'
+dataFolderDir = Config.dataFolderDir
 
 def makeFileName(prefix, suffix, ext = "tif"):    
     return prefix + '_' + suffix + '.' + ext
@@ -19,13 +20,10 @@ def createTiff(band, prefix, suffix):
 				r_band[x][y] = 196
 				g_band[x][y] = 118
 				b_band[x][y] = 8
-			if band[x][y] == 1:
-				# print x + ' ' + y 
+			if band[x][y] == 1: 
 				r_band[x][y] = 122
 				g_band[x][y] = 214
-				b_band[x][y] = 9
-			if band[x][y] == -1:
-				print str(x) + ' ' + str(y)
+				b_band[x][y] = 9			
 
 	driver = gdal.GetDriverByName('GTiff')
 	outfile_name = makeFileName(prefix, suffix, 'tif')

@@ -1,0 +1,1 @@
+dataFolderDir = 'F:/DaiHoc/2016-2017 ki 1/Advanced Topics in Computer Science/Images'

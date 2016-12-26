@@ -4,21 +4,28 @@ import gdal
 import numpy as np
 import Evaluation
 import Output
+import Config
+import Util
 
 ############### config ##############
-dataFolderDir = 'F:/DaiHoc/2016-2017 ki 1/Advanced Topics in Computer Science/Images'
+dataFolderDir = Config.dataFolderDir
 fileName = "%s_%d_DBSH.tif"
 
 ############### processing ##########
 
 def getDataForYear(bandName, year):
     result = []
-    filename = os.path.join(dataFolderDir, fileName % (bandName, year))
+    filename = os.path.join(dataFolderDir, fileName % (bandName, year))        
     for layer in xrange(1, 47):
+        print layer
+        # if not (bandName == 'BLUE'):                    
+        #     result.append(Util.normalize(GenerateHdf.getData(filename, layer), bandName))
+        # else:
+        #     result.append(GenerateHdf.getData(filename, layer))
         result.append(GenerateHdf.getData(filename, layer))
     return result
 
-def threshHoldAlgo(ndvi, evi, lswi, blue):
+def thresholdAlgo(ndvi, evi, lswi, blue):
     (n, m) = ndvi[0].shape
     res = np.zeros((n, m), dtype=np.int)
     nLayers = 46
@@ -85,14 +92,20 @@ def createRiceMap(year):
     lswi = getDataForYear("LSWI", year)
     blue = getDataForYear("BLUE", year)
 
-    riceMap = threshHoldAlgo(ndvi, evi, lswi, blue)
+    riceMap = thresholdAlgo(ndvi, evi, lswi, blue)
     
     # vi = gdal.Open(os.path.join(dataFolderDir, "EVI_2005_DBSH.tif")) # HACK
     # geoT = vi.GetGeoTransform()
     # proj = vi.GetProjection()
-    # Output.createTiff(riceMap, str(year), "RiceMap")    
+    Output.createTiff(riceMap, 'Threshold', str(year))    
 
     print Evaluation.evaluate(riceMap, year)
 
-# getDataForYear("NDVI", 2005)
-createRiceMap(2015)
+
+if __name__ == '__main__':
+    # ndvi = getDataForYear("NDVI", 2005)
+
+    createRiceMap(2015)    
+    # ndvi = GenerateHdf.getData(os.path.join(dataFolderDir, 'NDVI_2005_DBSH.tif'), 1)
+    # print ndvi.shape
+    pass
